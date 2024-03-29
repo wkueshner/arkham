@@ -99,14 +99,14 @@ with open(csv_filename, 'w', newline='') as csvfile:
     header_written = False
 
     # Now we iterate from the very right end of the graph to the very left end
-    for x_offset in range(int(graph.size['width']) - 15, 60, -increment):
+    for x_offset in range(int(graph.size['width']) - 17, 62, -increment):
         print(f"Moving to x_offset: {x_offset}")
         # Move the mouse to the next position on the graph starting from the very right end
         actions.move_to_element_with_offset(graph, x_offset - (graph.size['width'] / 2), 10).perform()  # Adjusting x_offset to start from the right end, Y-offset is an arbitrary small number inside the graph
 
         # Since the tooltip is hidden, we need to wait for it to become visible after moving the cursor
         try:
-            tooltip = driver.find_element(By.XPATH, '/html/body/div[4]/div/div[2]/div[6]/div[1]/div/div/div[2]')
+            tooltip = driver.find_element(By.CSS_SELECTOR, '#tp_chart_hover > div > div.\!p-0.\!bg-background.dark\:\!bg-background-dark.border-\[1px\].\!border-black-disabled.dark\:\!border-black-dark-disabled.\!rounded-\[8px\]')
             elapsed_time = 0
             sleep_time = 0.25 #previous start: 1 second
             max_wait_time = 6 #previous max: 10 seconds
