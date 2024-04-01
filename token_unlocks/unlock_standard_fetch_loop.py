@@ -35,8 +35,8 @@ def login(driver):
     # Input email
     time.sleep(3)  # Adjust based on page load times
     email_input = driver.find_element(By.TAG_NAME, 'input')  # Assuming the email input is the active/first input field
-    #email_input.send_keys("roomtemp34@gmail.com")
-    email_input.send_keys("wkueshner@gmail.com")
+    email_input.send_keys("roomtemp34@gmail.com")
+    #email_input.send_keys("wkueshner@gmail.com")
 
     time.sleep(6)  # Adjust based on page load times
 
@@ -45,10 +45,10 @@ def login(driver):
     next_button_email.click()
 
     # Input password
-    time.sleep(6)  # Adjust based on page load times
+    time.sleep(10)  # Adjust based on page load times
     password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')  # Targeting the password input specifically
-    #password_input.send_keys("YtBpFmx$4aB")
-    password_input.send_keys("u3DeqMrHNqcG")
+    password_input.send_keys("YtBpFmx$4aB")
+    #password_input.send_keys("u3DeqMrHNqcG")
 
     time.sleep(4)  # Adjust based on page load times
     # Click the "Next" button after entering the password
@@ -56,7 +56,7 @@ def login(driver):
     next_button_password.click()
 
     # Wait for 2FA to complete
-    time.sleep(15) 
+    time.sleep(12) 
 
     # Click the Sign In button after 2FA verification
     after_2fa_button = driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div[2]/c-wiz/div/div[3]/div/div/div[2]/div/div/button')
@@ -64,7 +64,7 @@ def login(driver):
 
 def navigate_and_click(driver):
     time.sleep(10) # wait until homepage is loaded
-    # Clicks the button to navigate to the token list
+    # Clicks the button to navigate to the watched tokens list
     driver.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[2]/div[1]/div[1]/button[1]/p').click()
     time.sleep(10)  # Wait for the page to load
     # Clicks the button to sort the list
@@ -101,6 +101,12 @@ def scrape_data(driver):
         print("Symbol element not found.")
         symbol_text = "N/A"  # Use "N/A" if the symbol element is not found
 
+    standard_allocations_button = WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#tp_vestingallocation_toggle_basicallo > div > button')))
+    #driver.execute_script("arguments[0].scrollIntoView(true);", standard_allocations_button)
+    #time.sleep(4)
+    driver.execute_script("arguments[0].click();", standard_allocations_button)
+    time.sleep(4)
+
     # Locate the graph element where the tooltip appears
     try:
         graph = WebDriverWait(driver, 100).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#tp_chart_hover')))
@@ -121,7 +127,7 @@ def scrape_data(driver):
 
     # Get the URL slug for the CSV filename
     url_slug = driver.current_url.split('/')[-1]
-    csv_filename = f"unlocks/{url_slug}_unlock_schedule.csv"
+    csv_filename = f"unlocks_standardized/{url_slug}_standardized_unlock_schedule.csv"
 
     # Open the CSV file for writing
     with open(csv_filename, 'w', newline='') as csvfile:
@@ -132,7 +138,7 @@ def scrape_data(driver):
         header_written = False
 
         # Now we iterate from the very right end of the graph to the very left end
-        for x_offset in range(int(graph.size['width']) - 15, 62, -increment):
+        for x_offset in range(int(graph.size['width']) - 63, 62, -increment):
             print(f"Moving to x_offset: {x_offset}")
             # Move the mouse to the next position on the graph starting from the very right end
             actions.move_to_element_with_offset(graph, x_offset - (graph.size['width'] / 2), 10).perform()
@@ -175,7 +181,7 @@ def scrape_data(driver):
             # Write the header if it hasn't been written yet
             if not header_written:
                 # Extract column names based on the specified line indices
-                headers = ['Date', 'Symbol', lines[2], lines[5]] # line 5/the third header may end up being "Allocations" if "Unlocked supply" does not exist
+                headers = ['Date', 'Symbol', 'Price', lines[2], lines[5]] # line 5/the third header may end up being "Allocations" if "Unlocked supply" does not exist
                 additional_headers = [lines[i] for i in range(9, len(lines), 3)] # line 6/the fourth header may be a number if "Unlocked supply" does not exist, but this guarantees no important headers are missing
                 headers.extend(additional_headers)
                 csvwriter.writerow(headers)
