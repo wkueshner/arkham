@@ -81,12 +81,12 @@ for filename in os.listdir(folder_path):
             "Date": [date],
             "Symbol": [symbol],
             "Project": [project],
-            "insider_tokens_unlocked": [tokens_unlocked],
+            "Price_date_diff": [date_diff],  # New column for the difference in days
             "insider_unlock_usd_value": [unlock_usd_value],
+            #"insider_tokens_unlocked": [tokens_unlocked],
             "insider_owned_float_percentage": [insider_owned_float_percentage],
-            "supply_increase_percentage": [supply_increase_percentage],
-            "Price_date": [price_date],  # New column for the date of the price used
-            "Price_date_diff": [date_diff]  # New column for the difference in days
+            #"supply_increase_percentage": [supply_increase_percentage],
+            "Price_date": [price_date]  # New column for the date of the price used
         })
         
         # Append the DataFrame to our list

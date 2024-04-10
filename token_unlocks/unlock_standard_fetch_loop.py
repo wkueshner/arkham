@@ -202,17 +202,17 @@ def scrape_data(driver, is_first_call=True):
         # Initialize a flag to track if the header has been written
         header_written = False
         
-        for i in range(7):  # Loop for the initial and subsequent three iterations
+        for i in range(9):  # Loop for the initial and subsequent three iterations. Original: 7
             if i == 0:
                 # Wait for the specific element on the first iteration
                 target_element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '//div[@id="tp_chart_hover"]//*[@width="2"][1]')))
                 # Perform click_and_hold, drag 620 pixels to the right, and release
-                ActionChains(driver).click_and_hold(target_element).move_by_offset(715, 0).release().perform() #gives navbar a width of 128px
+                ActionChains(driver).click_and_hold(target_element).move_by_offset(741, 0).release().perform() #Original: 715 (giving navbar a width of 128px)
             else:
                 # Wait for the specific element on subsequent iterations
                 target_element = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.XPATH, '//div[@id="tp_chart_hover"]//*[@fill="#fff"]')))
                 # Perform click_and_hold, drag 200 pixels to the left, and release
-                ActionChains(driver).click_and_hold(target_element).move_by_offset(-123, 0).release().perform() #710-(123*6)= -28 : full coverage
+                ActionChains(driver).click_and_hold(target_element).move_by_offset(-100, 0).release().perform() #Original: -123. 710-(123*6)= -28 : full coverage
             
             # Add a delay to ensure the drag action has completed
             time.sleep(4)  # Adjust timing as necessary

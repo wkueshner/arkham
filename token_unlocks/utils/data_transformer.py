@@ -1,12 +1,13 @@
 import pandas as pd
 import os
 import numpy as np
+from date_auditor import calculate_date_gaps_and_large_gaps
 
 def clean_and_format_data(df):
     df_cleaned = df.drop_duplicates().copy()
 
     # Remove specific columns if they exist
-    columns_to_remove = ['Reserved', 'Community & Other', 'Available Supply']
+    columns_to_remove = ['Reserved', 'Community & Other', 'Available Supply','Public Investors','Founder / Team (TBD)','Reserved (TBD)','Community & Other (TBD)']
     df_cleaned = df_cleaned.drop(columns=[col for col in columns_to_remove if col in df_cleaned.columns], errors='ignore')
     
     # Enhanced cleaning for 'Price' column
@@ -42,6 +43,11 @@ def calculate_insider_metrics(df):
     df['insider_supply_growth_percentage'] = 0.0  # New column for growth percentage
     df['insider_unlock_type'] = 'no unlock'
     
+    # Check if 'Insiders' in the first row (index 0) is not zero, then set 'insider_supply_growth' to its value
+    if df.at[0, 'Insiders'] != 0:
+        df.at[0, 'insider_supply_growth'] = df.at[0, 'Insiders']
+        df.at[0, 'insider_supply_growth_percentage'] = np.inf
+    
     for i in range(1, len(df)):
         current_insiders = df.at[i, 'Insiders']
         previous_insiders = df.at[i-1, 'Insiders']
@@ -66,28 +72,35 @@ def calculate_insider_metrics(df):
 def classify_growth(df, i, growth_percentage, growth_amount):
     # Initialize previous and subsequent growth amounts
     previous_growth_amount = df.at[i-1, 'insider_supply_growth'] if i > 0 else None
+    second_previous_growth_amount = df.at[i-2, 'insider_supply_growth'] if i > 1 else None
     subsequent_growth_amount = df.at[i+1, 'insider_supply_growth'] if i < len(df) - 1 else None
+    second_subsequent_growth_amount = df.at[i+2, 'insider_supply_growth'] if i < len(df) - 2 else None
     previous_insiders = df.at[i-1, 'Insiders'] if i > 0 else None
 
-    # Check for 'first cliff unlock'
-    if previous_insiders == 0 and subsequent_growth_amount == 0:
-        df.at[i, 'insider_unlock_type'] = 'first cliff unlock'
     # Check for 'no unlock' scenario
-    elif growth_percentage == 0:
+    if previous_insiders is None and df.at[0, 'Insiders'] != 0:
+        df.at[i, 'insider_unlock_type'] = 'token generation event unlock'
+    elif growth_amount == 0:
         df.at[i, 'insider_unlock_type'] = 'no unlock'
+    # Check for 'first cliff unlock'
+    elif (previous_insiders == 0) and (subsequent_growth_amount == 0 or ((subsequent_growth_amount * 25) < growth_amount)):
+        df.at[i, 'insider_unlock_type'] = 'first cliff unlock'
     # Check for 'first linear unlock'
-    elif previous_insiders == 0 and subsequent_growth_amount is not None and abs(growth_amount - subsequent_growth_amount) < 10:
+    elif i > 0 and ((previous_insiders == 0 or df.at[i-1, 'insider_unlock_type'] == 'first cliff unlock' or previous_growth_amount == 0) and subsequent_growth_amount is not None and subsequent_growth_amount > 0 and ((abs(growth_amount - subsequent_growth_amount) < 10) or (second_subsequent_growth_amount is not None and second_subsequent_growth_amount > 0 and abs(subsequent_growth_amount - second_subsequent_growth_amount) < 10))):
         df.at[i, 'insider_unlock_type'] = 'first linear unlock'
-    # Check for 'linear unlock' which depends on the previous growth amount
-    elif previous_growth_amount is not None and abs(growth_amount - previous_growth_amount) < 10:
+    elif (previous_growth_amount is not None and previous_growth_amount > 0 and subsequent_growth_amount is not None and subsequent_growth_amount > 0  and ((abs(growth_amount - subsequent_growth_amount) < 10 or abs(growth_amount - previous_growth_amount) < 10) or (second_previous_growth_amount is not None and abs(previous_growth_amount - second_previous_growth_amount) < 10) or second_subsequent_growth_amount is not None and abs(subsequent_growth_amount -second_subsequent_growth_amount) < 10)):
         df.at[i, 'insider_unlock_type'] = 'linear unlock'
+    elif previous_growth_amount is not None and previous_growth_amount > 0 and growth_amount > 0 and (subsequent_growth_amount is None or subsequent_growth_amount == 0):
+        df.at[i, 'insider_unlock_type'] = 'last linear unlock'
     # Classify based on growth percentage
-    elif growth_percentage < 20:
+    elif growth_percentage < 25:
         df.at[i, 'insider_unlock_type'] = 'small cliff unlock'
-    elif 20 <= growth_percentage < 50:
+    elif 25 <= growth_percentage < 50:
         df.at[i, 'insider_unlock_type'] = 'medium cliff unlock'
-    elif growth_percentage >= 50:
+    elif 50 <= growth_percentage < 100:
         df.at[i, 'insider_unlock_type'] = 'large cliff unlock'
+    elif growth_percentage >= 100:
+        df.at[i, 'insider_unlock_type'] = 'massive cliff unlock'
 
 def calculate_additional_metrics(df):
     """
@@ -99,18 +112,7 @@ def calculate_additional_metrics(df):
     df[numeric_columns] = df[numeric_columns].apply(pd.to_numeric, errors='coerce')
     
     # Initialize new columns
-    df['tokens_unlocked'] = df['Insiders'].diff().fillna(0)
-    df['unlock_usd_value'] = (df['Insiders'] * df['Price']).diff().fillna(0)
     df['insider_owned_float_percentage'] = (df['Insiders'] / df['Unlocked Supply']) * 100
-
-    # Calculate daily supply increase percentage
-    df['daily_supply_increase_percentage'] = (df['Unlocked Supply'].diff() / df['Unlocked Supply'].shift(1)) * 100
-
-    # Reset index to ensure consistent indexing
-    df.reset_index(drop=True, inplace=True)
-    # Avoid direct slice modification to prevent SettingWithCopyWarning
-    if not df.empty:
-        df.at[0, 'daily_supply_increase_percentage'] = float('nan')
 
     return df
 
@@ -120,19 +122,29 @@ def round_numeric_columns(df):
     excluding specific columns that are computed later in the process.
     """
     # List of columns to exclude from rounding
-    exclude_columns = ['insider_supply_growth', 'insider_supply_growth_percentage', 'tokens_unlocked', 'unlock_usd_value', 'insider_owned_float_percentage', 'daily_supply_increase_percentage']
+    exclude_columns = ['Price', 'insider_supply_growth', 'insider_supply_growth_percentage', 'tokens_unlocked', 'unlock_usd_value', 'insider_owned_float_percentage', 'daily_supply_increase_percentage']
     
     # Identify numeric columns that are not in the exclude list
     numeric_cols = df.select_dtypes(include=[np.number]).columns.difference(exclude_columns)
     
-    # Round these numeric columns
-    df[numeric_cols] = df[numeric_cols].round(0).astype(int)
+    # Fill NA values with 0 (or another appropriate value) before rounding and converting to int
+    df[numeric_cols] = df[numeric_cols].fillna(0).round(0).astype(int)
     
     return df
 
 def process_and_save_csv(csv_path, new_folder):
+
     df = pd.read_csv(csv_path)
     df = clean_and_format_data(df)
+
+    # Use calculate_date_gaps_and_large_gaps to get the average date gap
+    avg_gap, _ = calculate_date_gaps_and_large_gaps(df)
+    
+    # Check if the average date gap is greater than 1
+    if avg_gap > 1:
+        print(f'Skipping {csv_path} due to average date gap > 1')
+        return
+    
     df = add_insiders_column(df)
     df = round_numeric_columns(df)  # Call the new rounding function here
     df = calculate_insider_metrics(df)
@@ -145,11 +157,6 @@ def process_and_save_csv(csv_path, new_folder):
     df.to_csv(new_file_path, index=False)
     
     print(f'Data processed and saved to {new_file_path}.')
-
-'''
-csv_path = 'unlocks_standardized1/aevo-exchange_standardized_unlock_schedule.csv'
-process_and_save_csv(csv_path)
-'''
 
 # Define the source and destination folder paths
 source_folder = 'unlocks_standardized1'
