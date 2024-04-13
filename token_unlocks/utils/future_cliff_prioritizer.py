@@ -35,11 +35,12 @@ for filename in os.listdir(folder_path):
         
         # Iterate over the filtered DataFrame to calculate 'insider_unlocked_usd_value'
         for index, row in filtered_df.iterrows():
-            # Find the most recent 'Price' value from the unfiltered df for the current row's date
-            latest_price = df[df['Date'] < row['Date']]['Price'].dropna().iloc[-1] if not df[df['Date'] < row['Date']]['Price'].dropna().empty else 0
+            # Find the most recent non-zero 'Price' value from the unfiltered df for the current row's date
+            non_zero_prices = df[(df['Date'] < row['Date']) & (df['Price'] > 0)]['Price'].dropna()
+            latest_non_zero_price = non_zero_prices.iloc[-1] if not non_zero_prices.empty else 0
             
             # Calculate 'insider_unlocked_usd_value'
-            insider_unlocked_usd_value = row['insider_supply_growth'] * latest_price
+            insider_unlocked_usd_value = row['insider_supply_growth'] * latest_non_zero_price
             
             # Append the calculated value to the list
             insider_unlocked_usd_values.append(insider_unlocked_usd_value)

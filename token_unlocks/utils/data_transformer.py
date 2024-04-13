@@ -7,7 +7,7 @@ def clean_and_format_data(df):
     df_cleaned = df.drop_duplicates().copy()
 
     # Remove specific columns if they exist
-    columns_to_remove = ['Reserved', 'Community & Other', 'Available Supply','Public Investors','Founder / Team (TBD)','Reserved (TBD)','Community & Other (TBD)']
+    columns_to_remove = ['Reserved', 'Community & Other', 'Available Supply','Public Investors','Founder / Team (TBD)','Reserved (TBD)','Community & Other (TBD)','Private Investors (TBD)']
     df_cleaned = df_cleaned.drop(columns=[col for col in columns_to_remove if col in df_cleaned.columns], errors='ignore')
     
     # Enhanced cleaning for 'Price' column

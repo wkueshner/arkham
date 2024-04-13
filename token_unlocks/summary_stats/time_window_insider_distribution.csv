@@ -1,0 +1,83 @@
+Project,Symbol,start_date,end_date,days_between,unlock_type_most_contributed,linear_count,cliff_count,tge_count
+worldcoin-wld_featurized,WLD,2024-07-25,2025-07-24,364,linear,365,0,0
+the-graph_featurized,GRT,2021-06-17,2022-04-21,308,linear,309,0,0
+space-id_featurized,ID,2024-03-22,2026-03-22,730,cliff,0,9,0
+ondo-finance_featurized,ONDO,2025-01-18,2026-01-18,365,cliff,0,2,0
+injective-protocol_featurized,INJ,2021-10-21,2022-07-21,273,cliff,0,6,0
+heroes-of-mavia_featurized,MAVIA,2025-02-06,2027-05-06,819,cliff,0,10,0
+coin98_featurized,C98,2022-07-25,2023-05-25,304,linear,305,0,0
+cow-protocol_featurized,COW,2022-02-02,2024-01-17,714,linear,715,0,0
+liquity_featurized,LQTY,2022-04-05,2022-04-05,0,cliff,0,1,0
+compound-governance-token_featurized,COMP,2020-04-17,2020-04-17,0,token generation,0,0,1
+sui_featurized,SUI,2024-05-31,2024-09-30,122,cliff,0,5,0
+oasis-network_featurized,ROSE,2021-11-18,2022-08-18,273,cliff,0,4,0
+stepn_featurized,GMT,2023-02-02,2024-06-20,504,linear,505,0,0
+cartesi_featurized,CTSI,2021-04-23,2022-04-23,365,cliff,0,5,0
+stargate-finance_featurized,STG,2024-03-19,2025-03-18,364,linear,365,0,0
+flow_featurized,FLOW,2021-10-16,2022-01-02,78,cliff,78,1,0
+immutable-x_featurized,IMX,2022-11-04,2023-01-27,84,cliff,0,4,0
+memecoin-2_featurized,MEME,2024-05-03,2025-06-24,417,linear,417,1,0
+echelon-prime_featurized,PRIME,2024-03-31,2025-02-28,334,cliff,0,12,0
+aptos_featurized,APT,2023-11-12,2024-10-11,334,cliff,0,12,0
+manta-network_featurized,MANTA,2025-01-19,2026-09-19,608,linear,609,0,0
+cosmos_featurized,ATOM,2017-04-06,2017-04-06,0,token generation,0,0,1
+optimism_featurized,OP,2023-05-31,2024-10-29,517,cliff,0,18,0
+polkadot_featurized,DOT,2020-08-18,2020-08-18,0,cliff,0,1,0
+dymension_featurized,DYM,2025-02-08,2026-02-07,364,linear,365,0,0
+sudoswap_featurized,SUDO,2024-02-21,2025-08-21,547,linear,548,0,0
+elrond-erd-2_featurized,EGLD,2019-10-04,2020-10-04,366,cliff,0,5,0
+jito-governance-token_featurized,JTO,2024-12-07,2025-09-08,275,cliff,275,1,0
+ronin_featurized,RON,2022-12-28,2025-03-13,806,linear,807,0,0
+altlayer_featurized,ALT,2024-06-25,2025-09-26,458,linear,458,1,0
+yield-guild-games_featurized,YGG,2022-07-27,2024-03-27,609,cliff,0,21,0
+arkham_featurized,ARKM,2024-07-19,2026-04-04,624,linear,625,0,0
+jupiter-exchange-solana_featurized,JUP,2024-01-31,2024-01-31,0,token generation,0,0,1
+solana_featurized,SOL,2021-01-07,2021-01-07,0,cliff,0,1,0
+aleph-zero_featurized,AZERO,2021-11-10,2021-11-10,0,token generation,0,0,1
+bonk_featurized,BONK,2023-01-02,2024-07-02,547,linear,548,0,0
+algorand_featurized,ALGO,2019-06-19,2019-06-19,0,token generation,0,0,1
+superfarm_featurized,SUPER,2021-06-14,2021-10-21,129,linear,130,0,0
+pyth-network_featurized,PYTH,2023-11-20,2025-05-20,547,cliff,0,2,1
+blur_featurized,BLUR,2023-06-14,2024-06-16,368,linear,368,1,0
+near_featurized,NEAR,2021-04-24,2022-10-11,535,linear,536,0,0
+metis-token_featurized,METIS,2021-10-13,2022-05-13,212,cliff,0,8,0
+helium_featurized,HNT,2019-08-02,2021-08-01,730,linear,731,0,0
+zetachain_featurized,ZETA,2024-08-01,2025-07-01,334,cliff,0,12,0
+hashflow_featurized,HFT,2023-11-07,2025-03-07,486,cliff,0,17,0
+ftx-token_featurized,FTT,2019-07-29,2020-07-17,354,linear,355,0,0
+nym_featurized,NYM,2022-08-12,2023-06-02,294,cliff,0,8,0
+pendle_featurized,PENDLE,2021-10-28,2022-04-28,182,cliff,0,3,0
+celestia_featurized,TIA,2024-10-30,2025-02-19,112,cliff,112,1,0
+galxe_featurized,GAL,2022-11-05,2024-08-05,639,cliff,0,22,0
+fantom_featurized,FTM,2018-07-14,2018-07-14,0,token generation,0,0,1
+rocket-pool_featurized,RPL,2017-09-09,2017-09-09,0,token generation,0,0,1
+avalanche-2_featurized,AVAX,2020-09-10,2021-09-05,360,cliff,0,4,1
+pooltogether_featurized,POOL,2021-02-18,2021-08-19,182,linear,183,0,0
+pixels_featurized,PIXEL,2025-02-19,2026-09-19,577,cliff,0,20,0
+beam-2_featurized,BEAM,2022-07-04,2024-02-13,589,linear,590,0,0
+sei-network_featurized,SEI,2024-08-17,2026-07-02,684,linear,685,0,0
+ribbon-finance_featurized,RBN,2022-05-24,2022-11-23,183,cliff,183,1,0
+xai-blockchain_featurized,XAI,2024-07-09,2025-07-09,365,cliff,0,13,0
+euler_featurized,EUL,2022-01-02,2023-01-10,373,linear,374,0,0
+stakewise_featurized,SWISE,2021-10-02,2022-10-26,389,linear,390,0,0
+aevo-exchange_featurized,AEVO,2024-05-15,2024-05-15,0,cliff,0,1,0
+safe_featurized,SAFE,2023-07-06,2025-08-14,770,linear,771,0,0
+akash-network_featurized,AKT,2021-09-25,2022-03-25,181,cliff,0,2,0
+dydx_featurized,DYDX,2023-12-01,2024-03-01,91,cliff,0,4,0
+neutron-3_featurized,NTRN,2024-07-07,2025-12-20,531,linear,532,0,0
+edu-coin_featurized,EDU,2025-04-28,2026-08-17,476,linear,477,0,0
+starknet_featurized,STRK,2025-12-15,2027-03-15,455,cliff,0,16,0
+gelato_featurized,GEL,2022-09-13,2023-02-27,167,cliff,167,1,0
+mask-network_featurized,MASK,2021-08-19,2022-04-26,250,linear,251,0,0
+the-sandbox_featurized,SAND,2022-02-14,2023-08-14,546,cliff,0,4,0
+neon_featurized,NEON,2024-07-18,2025-02-19,216,linear,217,0,0
+joe_featurized,JOE,2021-10-03,2021-12-16,74,cliff,74,1,0
+mina-protocol_featurized,MINA,2021-07-11,2022-05-25,318,linear,319,0,0
+lybra-finance_featurized,LBR,2023-05-24,2024-04-24,336,linear,336,1,0
+arbitrum_featurized,ARB,2024-03-16,2025-03-16,365,cliff,0,13,0
+moonbeam_featurized,GLMR,2022-04-11,2023-01-11,275,cliff,0,10,0
+radiant-capital_featurized,RDNT,2022-08-13,2024-01-24,529,linear,530,0,0
+kujira_featurized,KUJI,2021-11-10,2022-04-15,156,linear,157,0,0
+render-token_featurized,RNDR,2020-10-06,2020-10-06,0,cliff,0,1,0
+hop-protocol_featurized,HOP,2023-06-10,2025-01-31,601,linear,602,0,0
+axelar_featurized,AXL,2022-12-16,2024-04-25,496,linear,497,0,0
